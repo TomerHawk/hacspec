@@ -114,7 +114,7 @@ fn aes_enc_last(state: Block, round_key: Key) -> Block {
 fn rounds(state: Block, key: Bytes144) -> Block {
     let mut out = state;
     for (_, key_block) in key.chunks(BLOCKSIZE) {
-        out = aes_enc(out, Key::from(key_block));
+        out = aes_enc(out, Key::from_seq(key_block));
     }
     out
 }
@@ -161,7 +161,7 @@ fn key_expansion_word(w0: Word, w1: Word, i: usize) -> Word {
 }
 
 fn key_expansion(key: Key) -> Bytes176 {
-    let mut key_ex = Bytes176::from(key.raw());
+    let mut key_ex = Bytes176::from_seq(key);
     let mut i: usize;
     for j in 0..40 {
         i = j + 4;
